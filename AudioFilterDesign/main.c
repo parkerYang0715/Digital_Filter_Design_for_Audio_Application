@@ -10,7 +10,6 @@ static void printUsage(void)
 {
     printf("  Design a digital IIR filter for audio signal processing.\n");
     printf("  Usage: AudioFiterDesign Fs Fc gain slope type [fx] [Q value]\n");
-    printf("  By default slope = 0.5 \n");
     printf("  fx=1 will return fixed point coefficients of IIR filter and the default value of Q is 15\n");
     printf("  type of filter: \n");
     printf("  bass_Shelf =%d\n", Bass_Shelf);
