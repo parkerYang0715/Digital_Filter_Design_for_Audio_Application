@@ -10,19 +10,31 @@ static void printUsage(void)
 {
     printf("  Design a digital IIR filter for audio signal processing.\n");
     printf("  Usage: AudioFiterDesign Fs Fc gain slope type [fx] [Q value]\n");
+    printf("  By default slope = 0.5 \n");
     printf("  fx=1 will return fixed point coefficients of IIR filter and the default value of Q is 15\n");
     printf("  type of filter: \n");
     printf("  bass_Shelf =%d\n", Bass_Shelf);
     printf("  Treble_Shelf =%d\n", Treble_Shelf);
     exit(0);
 }
-static void printResult(float* a, float* b) {
+static void printResult(float* a, float* b, short fx, short Q) {
     printf("The IIR filter coefficients are: \n");
-    for (int i = 0; i < 3; i++)
-        printf("a[%d] = %f, ", i, a[i]);
-    printf("\n");
-    for (int i = 0; i < 3; i++)
-        printf("b[%d] = %f, ", i, b[i]);
+    if (fx) {
+        printf("The fixed point Q notation is S%d.%d\n", 32 - Q, Q);
+        for (int i = 0; i < 3; i++)
+            printf("a[%d] = %d ", i, (int) (a[i] * (1 << Q)));
+        printf("\n");
+        for (int i = 0; i < 3; i++)
+            printf("b[%d] = %d ", i, (int) (b[i] * (1 << Q)));
+        
+    }
+    else {
+        for (int i = 0; i < 3; i++)
+            printf("a[%d] = %f ", i, a[i]);
+        printf("\n");
+        for (int i = 0; i < 3; i++)
+            printf("b[%d] = %f ", i, b[i]);
+    }
 }
 
 int main(int argc, char* argv[]) {
@@ -71,7 +83,7 @@ int main(int argc, char* argv[]) {
     a[0] = 1;
     float b[2];
     get_IIR(&a[1],&b, gain, V0, m, K, type);
-    printResult(a, b);
+    printResult(a, b, fx , Q);
     return 0;
 }
 
